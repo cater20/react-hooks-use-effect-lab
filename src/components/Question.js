@@ -6,15 +6,27 @@ function Question({ question, onAnswered }) {
 
   // add useEffect code
  useEffect(()=>{
+
   const timerId=setTimeout(()=>{
-    setTimeRemaining((timeRemaining)=>timeRemaining-1)
+    setTimeRemaining((timeRemaining)=>timeRemaining -1)
 
   },
   1000)
- }
+ 
+
+ if (timeRemaining===0){
+  setTimeRemaining(10)
+  onAnswered(false)
+}
+//[timeRemaining,onAnswered]
+
+return function cleanup(){
+  clearTimeout(timerId)
+};
+
+},[timeRemaining,onAnswered])
 
 
- )
   function handleAnswer(isCorrect) {
     setTimeRemaining(10);
     onAnswered(isCorrect);
@@ -37,6 +49,6 @@ function Question({ question, onAnswered }) {
       <h5>{timeRemaining} seconds remaining</h5>
     </>
   );
-}
+    }
 
 export default Question;
